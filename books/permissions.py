@@ -7,4 +7,4 @@ class IsAdminOrReadOnly(permissions.BasePermission):
         if request.method == "GET":
             return True
         if request.method == "POST":
-            return request.user and request.user.is_staff
+            return request.user.is_authenticated and request.user.is_employee

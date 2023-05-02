@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import User
 import uuid
 
 
@@ -9,6 +10,6 @@ class Book(models.Model):
     synopsis = models.TextField()
     published_date = models.DateField()
 
-    user_following = models.ForeignKey(
-        "user_following.UserFollowing", on_delete=models.CASCADE, related_name="books"
+    user_following = models.ManyToManyField(
+        User, through="user_following.UserFollowing", related_name="books"
     )
