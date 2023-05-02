@@ -41,7 +41,14 @@ THIRD_PARTY_APPS = [
     'drf_spectacular',
 ]
 
-MY_APPS = []
+MY_APPS = [
+    "book",
+    "users",
+    "book_copy",
+    "book_loan",
+    "lending_history",
+    "user_folowing",
+]
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -153,7 +160,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 2,
+    "PAGE_SIZE": 5,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
