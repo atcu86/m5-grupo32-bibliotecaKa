@@ -11,11 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import os  
+import os
 import dotenv
 from django.core.management.utils import get_random_secret_key
 
-dotenv.load_dotenv() 
+dotenv.load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,17 +37,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 THIRD_PARTY_APPS = [
-    'rest_framework',
-    'drf_spectacular',
+    "rest_framework",
+    "drf_spectacular",
 ]
 
 MY_APPS = [
-    "book",
+    "books",
     "users",
     "book_copy",
     "book_loan",
-    "lending_history",
-    "user_folowing",
+    "user_following",
 ]
 
 DJANGO_APPS = [
@@ -115,7 +114,6 @@ DATABASES = {
 }
 
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -164,9 +162,9 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
-SPECTACULAR_SETTINGS = { 
-    'TITLE': 'Your Project API', 
-    'DESCRIPTION': 'Your project description', 
-    'VERSION': '1.0.0', 
-    'SERVE_INCLUDE_SCHEMA': False,
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Your Project API",
+    "DESCRIPTION": "Your project description",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
