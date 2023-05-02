@@ -46,8 +46,7 @@ MY_APPS = [
     "users",
     "book_copy",
     "book_loan",
-    "lending_history",
-    "user_folowing",
+    "user_following",
 ]
 
 DJANGO_APPS = [
