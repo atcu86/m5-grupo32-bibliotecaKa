@@ -11,6 +11,8 @@ class BookSerializer(serializers.ModelSerializer):
             "author",
             "synopsis",
             "published_date",
+            "publishing_company",
+            "language",
             "user_following",
         ]
 

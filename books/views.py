@@ -11,3 +11,7 @@ class BookView(generics.ListCreateAPIView):
 
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    lookup_url_kwarg = "uuid"
+
+    def get_queryset(self):
+        return Book.objects.filter(book_id=self.kwargs.get("uuid"))
