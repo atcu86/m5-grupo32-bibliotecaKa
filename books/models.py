@@ -11,6 +11,9 @@ class Book(models.Model):
     published_date = models.DateField()
     publishing_company = models.CharField(max_length=200)
     language = models.CharField(max_length=200)
+    quantity = models.IntegerField()
+
+    genres = models.ManyToManyField("genres.Genre", related_name="books")
 
     user_following = models.ManyToManyField(
         User, through="user_following.UserFollowing", related_name="books"
