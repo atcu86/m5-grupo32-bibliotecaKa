@@ -21,7 +21,6 @@ class BookSerializer(serializers.ModelSerializer):
             "days_to_borrow",
             "genres",
             "quantity",
-            "user_following",
         ]
 
     def create(self, validated_data: dict) -> Book:
