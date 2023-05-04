@@ -6,4 +6,4 @@ class BookCopySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BookCopy
-        fields = ('id', 'book__title', 'book__author') # o underline duplo é para acessar os dados da model book
+        fields = ('id', 'book__title', 'book__author', "lending_time_limit", "book_loans") # o underline duplo é para acessar os dados da model book
