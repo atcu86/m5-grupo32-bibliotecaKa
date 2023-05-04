@@ -5,23 +5,7 @@ from datetime import date, timedelta
 
 
 class BookLoanSerializer(serializers.ModelSerializer):
-    max_return_date = serializers.SerializerMethodField()
-
-    def get_max_return_date(self, obj: BookCopy):
-        devolution_book = date.today() + timedelta(
-            int(obj.book_copy.lending_time_limit)
-        )
-
-        if devolution_book.weekday() == 5:
-            devolution_book = date.today() + timedelta(
-                int(obj.book_copy.lending_time_limit) + 2
-            )
-        if devolution_book.weekday() == 6:
-            devolution_book = date.today() + timedelta(
-                int(obj.book_copy.lending_time_limit) + 1
-            )
-
-        return devolution_book
+    # max_return_date = serializers.SerializerMethodField()
 
     class Meta:
         model = BookLoan
@@ -37,6 +21,24 @@ class BookLoanSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "book_copy": {"read_only": True}, "user": {"read_only": True}
         }
+
+    def get_max_return_date(self, obj: BookCopy):
+        # import ipdb
+        # ipdb.set_trace()
+        # devolution_book = date.today() + timedelta(
+        #     int(obj.book_copy.is_avaliable)
+        # )
+
+        # if devolution_book.weekday() == 5:
+        #     devolution_book = date.today() + timedelta(
+        #         int(obj.book_copy.lending_time_limit) + 2
+        #     )
+        # if devolution_book.weekday() == 6:
+        #     devolution_book = date.today() + timedelta(
+        #         int(obj.book_copy.lending_time_limit) + 1
+        #     )
+
+        return date.today()
 
     def create(self, validated_data):
         user = validated_data.pop("user")

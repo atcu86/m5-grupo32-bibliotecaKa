@@ -14,10 +14,14 @@ class BookLoanView(generics.CreateAPIView):
     lookup_url_kwarg = "bookloan_id"
 
     def perform_create(self, serializer):
-        book_copy = get_object_or_404(BookCopy, id=self.kwargs['bookloan_id'])
-        # book = get_object_or_404(BookCopy, book_id=book_copy)
+        books = get_object_or_404(Book, id=self.kwargs['bookloan_id'])
 
-        serializer.save(book_copy=book_copy, user=self.request.user)
+        book_copy = BookCopy.objects.all()
+
+        for book in book_copy:
+            if book.book_id == books.id:
+                if book.is_available:
+                    serializer.save(book_copy=book, user=self.request.user)
 
 
 class BookLoanDetailView(generics.RetrieveUpdateAPIView):
