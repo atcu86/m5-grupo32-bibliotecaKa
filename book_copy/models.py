@@ -10,7 +10,7 @@ class BookCopy(models.Model):
     # publishing_company = models.CharField(max_length=200)
     # language = models.CharField(max_length=200)
     # lending_time_limit=models.PositiveIntegerField(default=7)
-    # is_available=models.BooleanField(null=True, default=True)
+    is_available=models.BooleanField(null=True, default=True)
 
     ...
 
