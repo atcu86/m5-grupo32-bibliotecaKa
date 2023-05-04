@@ -12,6 +12,7 @@ class Book(models.Model):
     publishing_company = models.CharField(max_length=200)
     language = models.CharField(max_length=200)
     quantity = models.IntegerField()
+    days_to_borrow = models.IntegerField(default=14)
 
     genres = models.ManyToManyField("genres.Genre", related_name="books")
 
