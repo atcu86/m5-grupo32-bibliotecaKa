@@ -18,9 +18,7 @@ class BookLoanSerializer(serializers.ModelSerializer):
             "returned_date",
         ]
 
-        extra_kwargs = {
-            "book_copy": {"read_only": True}, "user": {"read_only": True}
-        }
+        extra_kwargs = {"book_copy": {"read_only": True}, "user": {"read_only": True}}
 
     def get_max_return_date(self, obj: BookCopy):
         # import ipdb

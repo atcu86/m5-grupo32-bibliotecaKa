@@ -35,6 +35,6 @@ class BookSerializer(serializers.ModelSerializer):
         book.save()
 
         for i in range(validated_data["quantity"]):
-            BookCopy.objects.create(book=book)
+            BookCopy.objects.create(book=book, lending_time_limit=book.days_to_borrow)
 
         return book
