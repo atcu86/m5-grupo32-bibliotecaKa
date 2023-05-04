@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import UserFollowing
-from .serializers import UserDetailSerializer
+from .serializers import UserFollowingSerializer
 from .permissions import IsStudent
 from rest_framework import generics
 from books.models import Book
@@ -11,7 +11,7 @@ class UserFollowingView(generics.CreateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsStudent]
     queryset = UserFollowing.objects.all()
-    serializer_class = UserDetailSerializer
+    serializer_class = UserFollowingSerializer
     lookup_url_kwarg = "book_id"
 
 

@@ -47,6 +47,7 @@ MY_APPS = [
     "book_copy",
     "book_loan",
     "user_following",
+    "genres"
 ]
 
 DJANGO_APPS = [
