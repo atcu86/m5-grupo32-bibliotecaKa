@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("users/following/<pk:book_id>", views.UserDetailView.as_view()),
+    path("users/following/<uuid:book_id>", views.UserFollowingView.as_view()),
 ]
