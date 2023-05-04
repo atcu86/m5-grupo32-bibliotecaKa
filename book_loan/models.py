@@ -7,7 +7,7 @@ class BookLoan(models.Model):
     book_copy = models.ForeignKey(
         'book_copy.BookCopy',
         on_delete=models.CASCADE,
-        related_name='book_loan'
+        related_name='book_loan',
     )
     user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='book_loan')
     loan_date = models.DateTimeField(auto_now_add=True)
