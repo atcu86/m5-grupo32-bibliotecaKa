@@ -18,6 +18,7 @@ class BookSerializer(serializers.ModelSerializer):
             "published_date",
             "publishing_company",
             "language",
+            "days_to_borrow",
             "genres",
             "quantity",
             "user_following",
