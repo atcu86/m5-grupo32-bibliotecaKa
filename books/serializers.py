@@ -24,9 +24,6 @@ class BookSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data: dict) -> Book:
-        for i in range(validated_data["quantity"]):
-            BookCopy.objects.create(book_id=validated_data["id"])
-
         genre_data = validated_data.pop("genres")
         book = Book.objects.create(**validated_data)
         for value in genre_data:
@@ -36,5 +33,8 @@ class BookSerializer(serializers.ModelSerializer):
             book.genres.add(found_genre)
 
         book.save()
+
+        for i in range(validated_data["quantity"]):
+            BookCopy.objects.create(book=book)
 
         return book
