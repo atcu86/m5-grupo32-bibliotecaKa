@@ -8,7 +8,6 @@ from .serializers import BookSerializer
 class BookView(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAdminOrReadOnly]
-
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
@@ -16,7 +15,7 @@ class BookView(generics.ListCreateAPIView):
 class BookDetailView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    lookup_url_kwarg = "uuid"
+    lookup_url_kwarg = "book_id"
 
     def get_queryset(self):
-        return Book.objects.filter(book_id=self.kwargs.get("uuid"))
+        return Book.objects.filter(id=self.kwargs.get("book_id"))
