@@ -41,3 +41,18 @@ class BookFollowersView(generics.ListAPIView):
         for item in all_following:
             all_users.append(User.objects.get(id=item.user_id))
         return all_users
+
+
+# class UserBooksView(generics.ListAPIView):
+#     authentication_classes = [JWTAuthentication]
+#     permission_classes = [IsAuthenticatedOrOwner]
+#     queryset = UserFollowing.objects.all()
+#     serializer_class = UserSerializer
+#     lookup_url_kwarg = "book_id"
+
+#     def get_queryset(self):
+#         all_following = UserFollowing.objects.filter(book_id=self.kwargs.get("book_id"))
+#         all_users = []
+#         for item in all_following:
+#             all_users.append(User.objects.get(id=item.user_id))
+#         return all_users
