@@ -21,7 +21,7 @@ class BookLoanSerializer(serializers.ModelSerializer):
         user = validated_data.pop("user")
 
         if not user.is_allowed_lending:
-            raise PermissionError("User cannot borrow the book")
+            raise serializers.ValidationError({"message": "User doesn't have permission"})
 
         return BookLoan.objects.create(**validated_data, user=user)
 
