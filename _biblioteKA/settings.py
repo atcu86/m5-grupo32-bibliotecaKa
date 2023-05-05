@@ -33,6 +33,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS +=[RENDER_EXTERNAL_HOSTNAME, "0.0.0.0"]
+
 
 # Application definition
 
@@ -69,7 +73,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
+
+DATABASE_URL = os.getenv('DATABASE_URL')
 
 ROOT_URLCONF = "_biblioteKA.urls"
 
