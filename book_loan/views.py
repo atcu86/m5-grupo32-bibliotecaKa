@@ -5,6 +5,7 @@ from book_copy.models import BookCopy
 from books.models import Book
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from datetime import date, timedelta
+from rest_framework import serializers
 
 
 class BookLoanView(generics.CreateAPIView):
@@ -26,14 +27,22 @@ class BookLoanView(generics.CreateAPIView):
         if devolution_book.weekday() == 6:
             devolution_book = date.today() + timedelta(books.days_to_borrow + 1)
 
+        aux = False
+
         for book in book_copy:
             if book.book_id == books.id:
                 if book.is_available:
+                    aux = True
                     serializer.save(
                         book_copy=book,
                         user=self.request.user,
                         max_return_date=devolution_book.strftime("%Y-%m-%d"),
                     )
+                    book.is_available = False
+                    book.save()
+                    break
+        if not aux:
+            raise serializers.ValidationError({"message": "The book isn't available"})
 
 
 class BookLoanDetailView(generics.RetrieveUpdateAPIView):
