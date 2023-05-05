@@ -10,6 +10,7 @@ from books.permissions import IsEmployee
 from .models import BookLoan
 from .permissions import IsEmployeeOrOwner
 from .models import BookLoan
+from users.models import User
 
 
 class BookLoanView(generics.CreateAPIView):
@@ -22,6 +23,7 @@ class BookLoanView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         books = get_object_or_404(Book, id=self.kwargs["bookloan_id"])
+        user = get_object_or_404(User, id=self.request.data["user_id"])
 
         book_copy = BookCopy.objects.all()
 
@@ -40,7 +42,7 @@ class BookLoanView(generics.CreateAPIView):
                     aux = True
                     serializer.save(
                         book_copy=book,
-                        user=self.request.user,
+                        user=user,
                         max_return_date=devolution_book.strftime("%Y-%m-%d"),
                     )
                     book.is_available = False
@@ -59,9 +61,10 @@ class BookLoanDetailView(generics.RetrieveUpdateAPIView):
     lookup_url_kwarg = "bookloan_id"
 
     def perform_update(self, serializer):
+        user = get_object_or_404(User, id=self.request.data["user_id"])
         book_loan = get_object_or_404(BookLoan, id=self.kwargs["bookloan_id"])
 
-        serializer.save(book_loan=book_loan, user=self.request.user)
+        serializer.save(book_loan=book_loan, user=user)
 
 
 class UserHistoryView(generics.ListAPIView):
