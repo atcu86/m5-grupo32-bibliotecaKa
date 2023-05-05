@@ -7,4 +7,8 @@ urlpatterns = [
         "bookloan/<uuid:bookloan_id>/devolution/",
         views.BookLoanDetailView.as_view(),
     ),
+    path(
+        "bookloan/<uuid:user_id>/history/",
+        views.UserHistoryView.as_view(),
+    ),
 ]

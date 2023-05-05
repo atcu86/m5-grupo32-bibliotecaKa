@@ -8,6 +8,8 @@ from datetime import date, timedelta
 from rest_framework import serializers
 from books.permissions import IsEmployee
 from .models import BookLoan
+from .permissions import IsEmployeeOrOwner
+from .models import BookLoan
 
 
 class BookLoanView(generics.CreateAPIView):
@@ -57,6 +59,19 @@ class BookLoanDetailView(generics.RetrieveUpdateAPIView):
     lookup_url_kwarg = "bookloan_id"
 
     def perform_update(self, serializer):
-        book_loan = get_object_or_404(BookLoan, id=self.kwargs['bookloan_id'])
+        book_loan = get_object_or_404(BookLoan, id=self.kwargs["bookloan_id"])
 
         serializer.save(book_loan=book_loan, user=self.request.user)
+
+
+class UserHistoryView(generics.ListAPIView):
+    serializer_class = BookLoanSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsEmployeeOrOwner]
+    queryset = BookLoan.objects.all()
+    serializer_class = BookLoanSerializer
+    lookup_url_kwarg = "user_id"
+
+    def get_queryset(self):
+        all_loans = BookLoan.objects.filter(user_id=self.kwargs.get("user_id"))
+        return all_loans
