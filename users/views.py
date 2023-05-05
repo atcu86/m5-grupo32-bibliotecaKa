@@ -27,4 +27,5 @@ class UserDetailDeleteView(generics.DestroyAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsEmployeeOrOwner]
     queryset = User.objects.all()
+    serializer_class = UserSerializer
     lookup_url_kwarg = "user_id"
