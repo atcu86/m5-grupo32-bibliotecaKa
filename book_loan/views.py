@@ -6,10 +6,13 @@ from books.models import Book
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from datetime import date, timedelta
 from rest_framework import serializers
+from books.permissions import IsEmployee
+from .models import BookLoan
 
 
 class BookLoanView(generics.CreateAPIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [IsEmployee]
 
     serializer_class = BookLoanSerializer
 
@@ -46,4 +49,14 @@ class BookLoanView(generics.CreateAPIView):
 
 
 class BookLoanDetailView(generics.RetrieveUpdateAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsEmployee]
+    queryset = BookLoan.objects.all()
+
     serializer_class = BookLoanSerializer
+    lookup_url_kwarg = "bookloan_id"
+
+    def perform_update(self, serializer):
+        book_loan = get_object_or_404(BookLoan, id=self.kwargs['bookloan_id'])
+
+        serializer.save(book_loan=book_loan, user=self.request.user)
