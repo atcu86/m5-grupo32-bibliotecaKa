@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import BookLoan
+from datetime import date, timedelta
 
 
 class BookLoanSerializer(serializers.ModelSerializer):
@@ -20,15 +21,32 @@ class BookLoanSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = validated_data.pop("user")
 
+        if user.date_block:
+            first_date = user.date_block
+            second_date = date.today()
+            if first_date < second_date:
+                user.is_allowed_lending = True
+                user.date_block = None
+                user.save()
+
         if not user.is_allowed_lending:
             raise serializers.ValidationError({"message": "User doesn't have permission"})
 
         return BookLoan.objects.create(**validated_data, user=user)
 
     def update(self, instance, validated_data):
-        print(validated_data)
-        for key, value in validated_data.items():
-            setattr(instance, key, value)
-        instance.save()
+        max_date = validated_data['book_loan'].max_return_date.strftime("%Y-%m-%d")
+        devolution_date = date.today().strftime("%Y-%m-%d")
+
+        # import ipdb
+        # ipdb.set_trace()
+        if max_date < devolution_date:
+            validated_data['user'].date_block = date.today + timedelta(7)
+            validated_data['user'].is_allowed_lending = False
+            validated_data.save()
+
+        # for key, value in validated_data.items():
+        #     setattr(instance, key, value)
+        # instance.save()
 
         return instance
