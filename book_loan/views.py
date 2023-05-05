@@ -6,6 +6,8 @@ from books.models import Book
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from datetime import date, timedelta
 from rest_framework import serializers
+from .permissions import IsEmployeeOrOwner
+from .models import BookLoan
 
 
 class BookLoanView(generics.CreateAPIView):
@@ -47,3 +49,16 @@ class BookLoanView(generics.CreateAPIView):
 
 class BookLoanDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = BookLoanSerializer
+
+
+class UserHistoryView(generics.ListAPIView):
+    serializer_class = BookLoanSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsEmployeeOrOwner]
+    queryset = BookLoan.objects.all()
+    serializer_class = BookLoanSerializer
+    lookup_url_kwarg = "user_id"
+
+    def get_queryset(self):
+        all_loans = BookLoan.objects.filter(user_id=self.kwargs.get("user_id"))
+        return all_loans
