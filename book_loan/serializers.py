@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from .models import BookLoan
+from book_copy.models import BookCopy
 from datetime import date, timedelta
 
 
 class BookLoanSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = BookLoan
         fields = [
@@ -30,23 +30,24 @@ class BookLoanSerializer(serializers.ModelSerializer):
                 user.save()
 
         if not user.is_allowed_lending:
-            raise serializers.ValidationError({"message": "User doesn't have permission"})
+            raise serializers.ValidationError(
+                {"message": "User doesn't have permission"}
+            )
 
         return BookLoan.objects.create(**validated_data, user=user)
 
     def update(self, instance, validated_data):
-        max_date = validated_data['book_loan'].max_return_date.strftime("%Y-%m-%d")
+        max_date = validated_data["book_loan"].max_return_date.strftime("%Y-%m-%d")
         devolution_date = date.today().strftime("%Y-%m-%d")
 
-        # import ipdb
-        # ipdb.set_trace()
         if max_date < devolution_date:
-            validated_data['user'].date_block = date.today + timedelta(7)
-            validated_data['user'].is_allowed_lending = False
-            validated_data.save()
+            validated_data["user"].date_block = date.today() + timedelta(7)
+            validated_data["user"].is_allowed_lending = False
+            validated_data["user"].save()
 
-        # for key, value in validated_data.items():
-        #     setattr(instance, key, value)
-        # instance.save()
+        instance.returned_date = devolution_date
+        instance.book_copy.is_available = True
+        instance.book_copy.save()
+        instance.save()
 
         return instance
