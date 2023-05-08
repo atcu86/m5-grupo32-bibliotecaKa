@@ -5,6 +5,24 @@ from datetime import date, timedelta
 
 
 class BookLoanSerializer(serializers.ModelSerializer):
+
+    user = serializers.SerializerMethodField()
+    book_copy = serializers.SerializerMethodField()
+
+    def get_user(self, obj):
+        dict = {
+            "id": obj.user.id,
+            "first_name": obj.user.username,
+        }
+        return dict
+
+    def get_book_copy(self, obj):
+        dict = {
+            "id": obj.book_copy.id,
+            "title_book": obj.book_copy.book.title
+        }
+        return dict
+
     class Meta:
         model = BookLoan
         fields = [
@@ -17,13 +35,23 @@ class BookLoanSerializer(serializers.ModelSerializer):
         ]
 
         extra_kwargs = {"book_copy": {"read_only": True}, "user": {"read_only": True}}
+        depth = 1
 
     def create(self, validated_data):
         user = validated_data.pop("user")
+        second_date = date.today()
+
+        book_loan = BookLoan.objects.filter(user=user)
+
+        for books in book_loan:
+            if not books.returned_date:
+                if books.max_return_date.strftime("%Y-%m-%d") < second_date.strftime("%Y-%m-%d"):
+                    raise serializers.ValidationError(
+                        {"message": f'devolve o livro filhao - {books.book_copy.id}'}
+                    )
 
         if user.date_block:
             first_date = user.date_block
-            second_date = date.today()
             if first_date < second_date:
                 user.is_allowed_lending = True
                 user.date_block = None
