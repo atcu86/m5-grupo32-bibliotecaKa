@@ -15,6 +15,7 @@ import os
 import dotenv
 from django.core.management.utils import get_random_secret_key
 import dj_database_url
+from datetime import timedelta
 
 dotenv.load_dotenv()
 
@@ -111,6 +112,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "_biblioteKA.wsgi.application"
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
+}
 
 
 # Database
