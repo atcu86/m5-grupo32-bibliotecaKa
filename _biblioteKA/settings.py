@@ -15,6 +15,7 @@ import os
 import dotenv
 from django.core.management.utils import get_random_secret_key
 import dj_database_url
+from datetime import timedelta
 
 dotenv.load_dotenv()
 
@@ -112,6 +113,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "_biblioteKA.wsgi.application"
 
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -181,3 +187,11 @@ SPECTACULAR_SETTINGS = {
 
 
 AUTH_USER_MODEL = "users.User"
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS = True
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
