@@ -1,26 +1,27 @@
 from rest_framework import serializers
 from .models import BookLoan
 from book_copy.models import BookCopy
+from user_following.models import UserFollowing
+from users.models import User
+from books.models import Book
 from datetime import date, timedelta
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 class BookLoanSerializer(serializers.ModelSerializer):
-
     user = serializers.SerializerMethodField()
     book_copy = serializers.SerializerMethodField()
 
     def get_user(self, obj):
         dict = {
             "id": obj.user.id,
-            "first_name": obj.user.username,
+            "username": obj.user.username,
         }
         return dict
 
     def get_book_copy(self, obj):
-        dict = {
-            "id": obj.book_copy.id,
-            "title_book": obj.book_copy.book.title
-        }
+        dict = {"id": obj.book_copy.id, "title_book": obj.book_copy.book.title}
         return dict
 
     class Meta:
@@ -45,9 +46,13 @@ class BookLoanSerializer(serializers.ModelSerializer):
 
         for books in book_loan:
             if not books.returned_date:
-                if books.max_return_date.strftime("%Y-%m-%d") < second_date.strftime("%Y-%m-%d"):
+                if books.max_return_date.strftime("%Y-%m-%d") < second_date.strftime(
+                    "%Y-%m-%d"
+                ):
                     raise serializers.ValidationError(
-                        {"message": f'devolve o livro filhao - {books.book_copy.id}'}
+                        {
+                            "message": f"There are still pendencies for this user - {books.book_copy.id}"
+                        }
                     )
 
         if user.date_block:
@@ -77,5 +82,27 @@ class BookLoanSerializer(serializers.ModelSerializer):
         instance.book_copy.is_available = True
         instance.book_copy.save()
         instance.save()
+
+        count = 0
+        all_copy = BookCopy.objects.all()
+        specific_copy = BookCopy.objects.filter(id=self.data["book_copy"]["id"]).first()
+        all_followers = UserFollowing.objects.filter(book_id=specific_copy.book_id)
+        found_book = Book.objects.filter(id=specific_copy.book_id).first()
+        for copy in all_copy:
+            if copy.is_available:
+                count += 1
+
+        if count == 1:
+            for follower in all_followers:
+                found_user = User.objects.filter(id=follower.user_id).first()
+                username = found_user.username
+                email = found_user.email
+                send_mail(
+                    subject="Seu livro está disponível!",
+                    message=f"Atenção {username}, o livro {found_book.title} está disponível.",
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[f"{email}"],
+                    fail_silently=False,
+                )
 
         return instance
