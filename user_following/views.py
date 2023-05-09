@@ -25,10 +25,11 @@ class UserFollowingView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         book = get_object_or_404(Book, id=self.kwargs.get("book_id"))
         if UserFollowing.objects.filter(book=book, user=self.request.user).exists():
-            raise serializers.ValidationError({"message": "You are already following this book."})
+            raise serializers.ValidationError(
+                {"message": "You are already following this book."}
+            )
         else:
-            serializer.save(book=book, user=self.request.user)
-            return Response(status=status.HTTP_200_OK)
+            return serializer.save(book=book, user=self.request.user)
 
 
 class BookFollowersView(generics.ListAPIView):
