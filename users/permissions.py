@@ -12,11 +12,12 @@ class IsAuthorized(permissions.BasePermission):
 
 class IsAuthorizedOrNot(permissions.BasePermission):
     def has_object_permission(self, request: Request, view: View, obj) -> bool:
+        # import ipdb
+
+        # ipdb.set_trace()
         if request.user.is_authenticated:
-            if request.method == "PATCH":
+            if request.method == "PATCH" or request.method == "DELETE":
                 return obj.id == request.user.id
-            if request.user.is_employee:
-                return True
             else:
-                return obj.id == request.user.id
+                return request.user.id == obj.id or request.user.is_employee
         return False
