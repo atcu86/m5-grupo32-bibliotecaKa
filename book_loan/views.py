@@ -23,9 +23,8 @@ class BookLoanView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         books = get_object_or_404(Book, id=self.kwargs["bookloan_id"])
-        if not self.request.data:
-            raise serializers.ValidationError({"message": "User id is required."})
-        user = User.objects.filter(id=self.request.data["user_id"]).first()
+        user = get_object_or_404(User, id=self.request.data["user_id"])
+
         book_copy = BookCopy.objects.all()
 
         devolution_book = date.today() + timedelta(books.days_to_borrow)
