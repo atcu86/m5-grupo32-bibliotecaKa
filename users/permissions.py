@@ -3,7 +3,7 @@ from rest_framework.views import View, Request
 
 
 class IsAuthorized(permissions.BasePermission):
-    def has_object_permission(self, request: Request, view: View, obj) -> bool:
+    def has_permission(self, request, view):
         if request.method == "POST":
             return True
         else:
@@ -12,11 +12,8 @@ class IsAuthorized(permissions.BasePermission):
 
 class IsAuthorizedOrNot(permissions.BasePermission):
     def has_object_permission(self, request: Request, view: View, obj) -> bool:
-        # import ipdb
-
-        # ipdb.set_trace()
         if request.user.is_authenticated:
-            if request.method == "PATCH" or request.method == "DELETE":
+            if request.method == "PATCH":
                 return obj.id == request.user.id
             else:
                 return request.user.id == obj.id or request.user.is_employee
