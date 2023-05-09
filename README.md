@@ -17,7 +17,7 @@ Este é o backend da aplicação BiblioteKa -  Esta API é projetada para simula
 <p> Para importar o JSON no Insomnia é só clicar no botão "Run in Insomnia". Depois é só seguir os passos que ele irá importar todos os endpoints em seu insomnia.
 </p>
 
-<a href="https://insomnia.rest/run/?label=BiblioteKa&uri=https%3A%2F%2Fgithub.com%2Fnbadilho%2Fm5-grupo32-BibliotecaKA%2Fblob%2Fmain%2FInsomnia.json" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
+<a href="https://insomnia.rest/run/?label=BiblioteKa&uri=https%3A%2F%2Fraw.githubusercontent.com%2Fnbadilho%2Fm5-grupo32-BibliotecaKA%2Fmain%2FInsomnia.json%3Ftoken%3DGHSAT0AAAAAACB6KO5APGMN7T7H4QEEDTMOZC2XAUA" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
 
 
 <br style="margin-top: 20px;">
