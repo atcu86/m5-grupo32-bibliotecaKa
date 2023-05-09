@@ -1,7 +1,7 @@
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import User
 from .serializers import UserSerializer, UserDetailSerializer
-from .permissions import IsAuthorized
+from .permissions import IsAuthorized, IsAuthorizedOrNot
 from rest_framework import generics
 
 
@@ -14,7 +14,7 @@ class UserView(generics.ListCreateAPIView):
 
 class UserDetailView(generics.RetrieveUpdateAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthorized]
+    permission_classes = [IsAuthorizedOrNot]
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
     lookup_url_kwarg = "user_id"
@@ -25,7 +25,7 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
 
 class UserDetailDeleteView(generics.DestroyAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthorized]
+    permission_classes = [IsAuthorizedOrNot]
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_url_kwarg = "user_id"
