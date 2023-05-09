@@ -51,7 +51,7 @@ class BookLoanSerializer(serializers.ModelSerializer):
                 ):
                     raise serializers.ValidationError(
                         {
-                            "message": f"There are still pendencies for this user - {books.book_copy.id}"
+                            "message": f"There are still pendencies for this user - {books.book_copy.book.title}"
                         }
                     )
 
