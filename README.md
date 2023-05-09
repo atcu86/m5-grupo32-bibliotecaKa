@@ -10,11 +10,6 @@
 Este é o backend da aplicação BiblioteKa -  Esta API é projetada para simular o backend de uma biblioteca, permitindo a gestão de livros, empréstimos e devoluções. Com esta API, você pode adicionar, visualizar, atualizar e excluir informações sobre os livros disponíveis na biblioteca. Além disso, você pode gerenciar os empréstimos e devoluções de livros, permitindo que seus usuários vejam quais livros estão atualmente emprestados e quando eles devem ser devolvidos.
 </p>
 
-## **Insomnia**
-
-<p> Para importar o JSON no Insomnia é só clicar no botão "Run in Insomnia". Depois é só seguir os passos que ele irá importar todos os endpoints em seu insomnia.
-</p>
-
 <br style="margin-top: 20px;">
 
 A url base da API é https://biblioteka-2bav.onrender.com/api/
