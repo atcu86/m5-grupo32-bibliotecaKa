@@ -12,6 +12,7 @@ from django.conf import settings
 class BookLoanSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     book_copy = serializers.SerializerMethodField()
+    user_id = serializers.UUIDField()
 
     def get_user(self, obj):
         dict = {
@@ -33,6 +34,7 @@ class BookLoanSerializer(serializers.ModelSerializer):
             "loan_date",
             "max_return_date",
             "returned_date",
+            "user_id",
         ]
 
         extra_kwargs = {"book_copy": {"read_only": True}, "user": {"read_only": True}}
